@@ -1,6 +1,8 @@
-#\\ww-file16-01\IT\BootUpLinks\program\wakemeonlan-x64\WakeMeOnLan.exe /wakeup MAC
-#Import-Module sqlserver
-
+#Isaac Estell
+#6/15/2022
+#
+#Creates WOL Links based off a given company directory. Has the functionality to Update, Create, Delete links if the user is new, gets a differnet pc, or is leaving
+#the company. Names the files based off of the hostname which follows a certain naming protocol. Also pulls the users MAC as it is required to make the link.
 
 function createShortcut{
     Param(
