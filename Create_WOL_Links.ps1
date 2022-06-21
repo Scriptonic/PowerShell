@@ -13,8 +13,8 @@ function createShortcut{
 
     if(-not (($hostname -eq "") -or ($MAC -eq ""))){
         #File Paths
-        $shortcutExePath = '\\ww-file16-01\IT\BootUpLinks\program\wakemeonlan-x64\WakeMeOnLan.exe'  
-        $shortcutFilePath = '\\ww-file16-01\IT\BootUpLinks\'
+        $shortcutExePath = 'examplepath'  
+        $shortcutFilePath = 'examplepath'
 
         #Calculate the hostname without WW- or -PC
         $hostname = $hostname.ToUpper()
@@ -40,9 +40,9 @@ function createShortcut{
 function getShortcutInfo{
 
     #Pulling all users from SeatTable who have both a MAC and ComputerName(HostName)
-    $connString = "Data Source=WW-SEAT-SVR;Initial Catalog=WW-SEAT-DB;User ID=Seat;Password=Chartblock38"
+    $connString = ""
     $userInfo = Invoke-SQLcmd -Query "SELECT Name, ComputerName, MAC From SeatTable Where MAC != '' and ComputerName != ''" -ConnectionString $connString
-    $existingLinks = Get-ChildItem -Path "\\ww-file16-01\IT\BootUpLinks\" -Filter '*.lnk'
+    $existingLinks = Get-ChildItem -Path "examplepath" -Filter '*.lnk'
     $errorUsers = [System.Collections.ArrayList]::new()
     $count = 1
 
@@ -82,14 +82,14 @@ function getShortcutInfo{
                     $needsFileCreated = $false
                 }
                 else{
-                    Remove-Item -Path ("\\ww-file16-01\IT\BootUpLinks\" + $existingLink.Name)
-                    "Deleted an incorect file for" + $user.Name | Out-File -FilePath "\\ww-file16-01\IT\BootUpLinks\logs\logs.txt" -Append   
+                    Remove-Item -Path ("examplepath" + $existingLink.Name)
+                    "Deleted an incorect file for" + $user.Name | Out-File -FilePath "examplepath" -Append   
                 }
                                                                                                   
             }
             elseif($existingLinkDescription -eq $user.Name){
-                Remove-Item -Path ("\\ww-file16-01\IT\BootUpLinks\" + $existingLink.Name)
-                "Deleted an old file for " + $user.Name | Out-File -FilePath "\\ww-file16-01\IT\BootUpLinks\logs\logs.txt" -Append
+                Remove-Item -Path ("examplepath" + $existingLink.Name)
+                "Deleted an old file for " + $user.Name | Out-File -FilePath "examplepath" -Append
             }   
         }
 
@@ -102,11 +102,11 @@ function getShortcutInfo{
             Write-Host ("File created.`n")
 
             createShortcut -hostname $user.ComputerName -MAC $user.MAC -fullName $user.Name
-            "Shortcut created for " + $user.Name | Out-File -FilePath "\\ww-file16-01\IT\BootUpLinks\logs\logs.txt" -Append
+            "Shortcut created for " + $user.Name | Out-File -FilePath "examplepath" -Append
         }
     }
 
     #Print all users that had errors to a text file
-    $errorUsers | Out-File -FilePath "\\ww-file16-01\IT\BootUpLinks\errors\errors.txt"
+    $errorUsers | Out-File -FilePath "examplepath"
 }
 getShortcutInfo
